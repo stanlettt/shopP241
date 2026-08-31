@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace vendeur — FripStyle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{
+  --paper:#FBF3E7;
+  --paper-dark:#F0E3C9;
+  --paper-deep:#E7D6B2;
+  --ink:#1F2B1E;
+  --ink-soft:#54614F;
+  --ink-faint:#8B937F;
+  --teal:#146B76;
+  --teal-dark:#0D4A52;
+  --teal-light:#DCEEEF;
+  --yellow:#F2B705;
+  --yellow-dark:#C4930A;
+  --orange:#E8622C;
+  --red:#C13B2A;
+  --green:#2D7A4A;
+  --line:rgba(31,43,30,0.14);
+  --line-strong:rgba(31,43,30,0.32);
+  --font-display:'Anton', sans-serif;
+  --font-body:'Work Sans', system-ui, sans-serif;
+  --font-mono:'Space Mono', monospace;
+  --sidebar-w:250px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--paper);color:var(--ink);line-height:1.5;}
+a{text-decoration:none;color:inherit;}
+button,input,select,textarea{font-family:var(--font-body);}
+button{cursor:pointer;}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:var(--ink-faint);border-radius:4px;}
+
+.stamp{
+  display:inline-flex;align-items:center;gap:6px;border:2px solid currentColor;outline:1px solid currentColor;outline-offset:2px;
+  padding:4px 10px;border-radius:3px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.04em;
+  text-transform:uppercase;filter:url(#inkRough3);
+}
+.stamp-green{color:var(--green);}
+.stamp-red{color:var(--red);}
+.stamp-yellow{color:var(--yellow-dark);}
+.stamp-teal{color:var(--teal-dark);}
+.stamp-ink{color:var(--ink-faint);}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 20px;border-radius:6px;font-size:13.5px;font-weight:700;border:2px solid var(--ink);
+  transition:transform .15s ease;
+}
+.btn:active{transform:translateY(1px);}
+.btn-solid{background:var(--teal);border-color:var(--teal-dark);color:var(--paper);}
+.btn-solid:hover{background:var(--teal-dark);}
+.btn-yellow{background:var(--yellow);border-color:var(--yellow-dark);color:var(--ink);}
+.btn-yellow:hover{background:var(--yellow-dark);}
+.btn-ghost{background:transparent;color:var(--ink);}
+.btn-ghost:hover{background:rgba(31,43,30,0.06);}
+.btn-sm{padding:7px 14px;font-size:12px;}
+
+/* ============= LAYOUT ============= */
+.app{display:flex;min-height:100vh;}
+
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--paper-dark);
+  border-right:2px dashed var(--line-strong);position:fixed;top:0;bottom:0;left:0;
+  display:flex;flex-direction:column;padding:22px 0;
+}
+.side-logo{display:flex;align-items:center;gap:10px;padding:0 22px 22px;border-bottom:1px dashed var(--line-strong);margin-bottom:14px;}
+.logo-stamp{
+  width:38px;height:38px;border-radius:50%;border:2px solid var(--teal-dark);outline:1px solid var(--teal-dark);outline-offset:2px;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:13px;color:var(--teal-dark);
+  transform:rotate(-8deg);filter:url(#inkRough3);flex-shrink:0;
+}
+.side-logo-text{font-family:var(--font-display);font-size:17px;}
+.side-logo-sub{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);letter-spacing:0.05em;text-transform:uppercase;}
+
+.side-section-label{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em;padding:14px 22px 8px;}
+.side-nav{list-style:none;display:flex;flex-direction:column;gap:2px;padding:0 12px;}
+.side-link{
+  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:6px;font-size:13.5px;font-weight:500;color:var(--ink-soft);
+  transition:all .15s ease;position:relative;
+}
+.side-link i{font-size:17px;width:18px;text-align:center;}
+.side-link:hover{background:rgba(31,43,30,0.05);color:var(--ink);}
+.side-link.active{background:var(--ink);color:var(--paper);font-weight:700;}
+.side-link .count{
+  margin-left:auto;font-family:var(--font-mono);font-size:10.5px;background:var(--red);color:var(--paper);
+  padding:1px 7px;border-radius:20px;
+}
+.side-link.active .count{background:var(--yellow);color:var(--ink);}
+
+.side-plan-box{
+  margin:10px 12px;padding:14px;border:1.5px dashed var(--line-strong);border-radius:8px;background:var(--paper);
+}
+.side-plan-label{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.side-plan-name{font-family:var(--font-display);font-size:16px;margin-bottom:6px;}
+.side-plan-status{font-size:11px;color:var(--teal-dark);font-weight:700;}
+
+.side-footer{margin-top:auto;padding:16px 22px 0;border-top:1px dashed var(--line-strong);display:flex;align-items:center;gap:10px;}
+.side-avatar{width:34px;height:34px;border-radius:50%;background:var(--yellow-dark);color:var(--paper);font-family:var(--font-mono);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.side-user-name{font-size:12.5px;font-weight:700;}
+.side-user-role{font-size:10.5px;color:var(--ink-faint);}
+
+.main{margin-left:var(--sidebar-w);flex:1;min-width:0;}
+.topbar{
+  height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:2px dashed var(--line-strong);background:var(--paper);position:sticky;top:0;z-index:10;gap:20px;
+}
+.topbar-title{font-family:var(--font-display);font-size:22px;}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;border:1.5px solid var(--line-strong);border-radius:20px;padding:8px 16px;
+  flex:1;max-width:360px;
+}
+.topbar-search input{border:none;outline:none;background:none;font-size:13px;flex:1;color:var(--ink);}
+.topbar-search i{color:var(--ink-faint);}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.top-icon{
+  width:38px;height:38px;border:1.5px solid var(--line-strong);border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:var(--ink-soft);font-size:16px;position:relative;
+}
+.top-icon .dot{position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:var(--red);border-radius:50%;border:1.5px solid var(--paper);}
+
+.content{padding:28px 32px 60px;}
+.view{display:none;}
+.view.active{display:block;}
+
+/* ---- banner (essai gratuit / abonnement) ---- */
+.trial-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:var(--teal-light);border:1.5px solid var(--teal);border-radius:8px;padding:16px 22px;margin-bottom:24px;
+}
+.trial-banner-text{font-size:13.5px;color:var(--teal-dark);}
+.trial-banner-text strong{font-family:var(--font-mono);}
+
+/* ---- stat receipts ---- */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.receipt{background:var(--paper);border:1.5px solid var(--line-strong);border-radius:6px;padding:20px;position:relative;}
+.receipt-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.receipt-label{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;color:var(--ink-faint);letter-spacing:0.06em;}
+.receipt-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.receipt-value{font-family:var(--font-mono);font-size:26px;font-weight:700;margin-bottom:6px;}
+.receipt-delta{font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:4px;}
+.delta-up{color:var(--green);}
+.delta-down{color:var(--red);}
+
+.panel-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:28px;align-items:start;}
+.panel{background:var(--paper);border:1.5px solid var(--line-strong);border-radius:8px;padding:22px;}
+.panel-title{font-family:var(--font-display);font-size:17px;margin-bottom:4px;}
+.panel-sub{font-size:12px;color:var(--ink-faint);margin-bottom:20px;}
+
+.chart{display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:10px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;height:100%;justify-content:flex-end;}
+.bar{width:100%;max-width:34px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--teal-light),var(--teal));}
+.bar-day{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);}
+
+.order-list{display:flex;flex-direction:column;gap:14px;}
+.order-item{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px dashed var(--line);}
+.order-item:last-child{border-bottom:none;padding-bottom:0;}
+.order-avatar{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--paper);}
+.order-name{font-size:12.5px;font-weight:700;}
+.order-sub{font-size:10.5px;color:var(--ink-faint);}
+.order-amount{margin-left:auto;font-family:var(--font-mono);font-weight:700;font-size:13px;color:var(--teal-dark);}
+
+.table-wrap{background:var(--paper);border:1.5px solid var(--line-strong);border-radius:8px;overflow:hidden;}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:2px dashed var(--line-strong);gap:16px;flex-wrap:wrap;}
+.table-title{font-family:var(--font-display);font-size:18px;}
+.mini-search{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line-strong);border-radius:20px;padding:7px 14px;min-width:220px;}
+.mini-search input{border:none;outline:none;background:none;font-size:12.5px;flex:1;}
+.mini-search i{color:var(--ink-faint);font-size:14px;}
+
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--paper-dark);}
+th{text-align:left;padding:12px 20px;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-faint);border-bottom:2px dashed var(--line-strong);}
+td{padding:14px 20px;border-bottom:1px dashed var(--line);font-size:13px;vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:rgba(31,43,30,0.02);}
+.cell-entity{display:flex;align-items:center;gap:10px;}
+.entity-avatar{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--paper);}
+.entity-name{font-weight:700;font-size:13px;}
+.entity-sub{font-size:10.5px;color:var(--ink-faint);}
+.mono{font-family:var(--font-mono);}
+.row-actions{display:flex;gap:8px;}
+.act-btn{width:30px;height:30px;border-radius:6px;border:1.5px solid var(--line-strong);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-soft);transition:all .15s;background:var(--paper);}
+.act-btn.edit:hover{background:var(--teal);border-color:var(--teal);color:var(--paper);}
+.act-btn.reject:hover{background:var(--red);border-color:var(--red);color:var(--paper);}
+
+/* ---- subscription plan cards (mon abonnement) ---- */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px;}
+.plan-card{background:var(--paper);border:2px solid var(--line-strong);border-radius:8px;padding:22px;position:relative;display:flex;flex-direction:column;}
+.plan-card.current{border-color:var(--teal-dark);box-shadow:0 10px 22px rgba(20,107,118,0.14);}
+.plan-current-badge{position:absolute;top:-12px;left:20px;background:var(--teal);color:var(--paper);font-family:var(--font-mono);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:4px 10px;border-radius:20px;}
+.plan-card-name{font-family:var(--font-display);font-size:19px;margin-bottom:4px;}
+.plan-card-price{font-family:var(--font-mono);font-size:24px;font-weight:700;margin-bottom:14px;}
+.plan-card-price span{font-size:12px;font-weight:400;color:var(--ink-faint);}
+.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px;flex:1;}
+.plan-card li{font-size:12.5px;display:flex;gap:7px;align-items:flex-start;}
+.plan-card li i{color:var(--teal-dark);margin-top:2px;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:12px;font-weight:700;color:var(--ink-soft);}
+.field input,.field select,.field textarea{border:1.5px solid var(--line-strong);border-radius:6px;padding:10px 12px;font-size:13px;background:var(--paper);color:var(--ink);font-family:var(--font-body);}
+.field-full{grid-column:1 / -1;}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:6px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all .25s ease;z-index:200;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ---- product entity thumbnail (with real photo) ---- */
+.entity-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+/* ---- modal: ajouter / modifier un article ---- */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(31,43,30,0.45);z-index:300;
+  display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--paper);border:2px solid var(--ink);border-radius:10px;max-width:560px;width:100%;
+  padding:28px 28px 24px;position:relative;
+}
+.modal-close{
+  position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:6px;border:1.5px solid var(--line-strong);
+  display:flex;align-items:center;justify-content:center;color:var(--ink-soft);background:var(--paper);
+}
+.modal-close:hover{border-color:var(--ink);color:var(--ink);}
+.modal-title{font-family:var(--font-display);font-size:22px;margin-bottom:4px;padding-right:40px;}
+.modal-sub{font-size:12.5px;color:var(--ink-faint);margin-bottom:22px;}
+
+.photo-dropzone{
+  border:2px dashed var(--line-strong);border-radius:8px;padding:22px;text-align:center;cursor:pointer;
+  transition:all .15s ease;margin-bottom:14px;
+}
+.photo-dropzone:hover,.photo-dropzone.dragover{border-color:var(--teal);background:var(--teal-light);}
+.photo-dropzone i{font-size:26px;color:var(--ink-faint);margin-bottom:8px;display:block;}
+.photo-dropzone-text{font-size:13px;color:var(--ink-soft);font-weight:600;}
+.photo-dropzone-sub{font-size:11px;color:var(--ink-faint);margin-top:3px;}
+
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px;}
+.photo-thumb{
+  position:relative;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1.5px solid var(--line-strong);background:var(--paper-dark);
+}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-thumb .cover-tag{
+  position:absolute;bottom:0;left:0;right:0;background:rgba(31,43,30,0.75);color:var(--paper);
+  font-family:var(--font-mono);font-size:8.5px;text-align:center;padding:2px 0;text-transform:uppercase;letter-spacing:0.04em;
+}
+.photo-thumb-remove{
+  position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:var(--red);color:var(--paper);
+  border:none;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;
+}
+.photo-thumb-add{
+  aspect-ratio:1;border-radius:6px;border:1.5px dashed var(--line-strong);display:flex;align-items:center;justify-content:center;
+  color:var(--ink-faint);font-size:20px;background:transparent;
+}
+.photo-thumb-add:hover{border-color:var(--teal);color:var(--teal-dark);}
+
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:6px;}
+
+@media(max-width:1100px){
+  .sidebar{transform:translateX(-100%);transition:transform .25s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);box-shadow:12px 0 32px rgba(31,43,30,0.25);}
+  .main{margin-left:0;}
+  .panel-row{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .form-grid{grid-template-columns:1fr;}
+  .plan-grid{grid-template-columns:1fr;}
+  .topbar-hamburger{display:flex !important;}
+  .topbar-search{display:none;}
+}
+.topbar-hamburger{display:none;background:var(--paper);cursor:pointer;flex-shrink:0;}
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;background:rgba(31,43,30,0.35);z-index:190;
+}
+.sidebar-overlay.open{display:block;}
+
+/* ---- scrollable tables on small screens ---- */
+.table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.table-scroll table{min-width:640px;}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0;">
+  <filter id="inkRough3">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8"/>
+  </filter>
+</svg>
+
+<div class="app">
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="side-logo">
+      <div class="logo-stamp">FS</div>
+      <div>
+        <div class="side-logo-text">FripStyle</div>
+        <div class="side-logo-sub">Espace vendeur</div>
+      </div>
+    </div>
+
+    <div class="side-section-label">Ma boutique</div>
+    <ul class="side-nav">
+      <li><a href="#" class="side-link active" data-tab="dashboard"><i class="ti ti-layout-dashboard"></i>Tableau de bord</a></li>
+      <li><a href="#" class="side-link" data-tab="produits"><i class="ti ti-hanger"></i>Mes articles<span class="count">8</span></a></li>
+      <li><a href="#" class="side-link" data-tab="commandes"><i class="ti ti-receipt"></i>Mes commandes<span class="count">3</span></a></li>
+    </ul>
+
+    <div class="side-section-label">Compte</div>
+    <ul class="side-nav">
+      <li><a href="#" class="side-link" data-tab="abonnement"><i class="ti ti-credit-card"></i>Mon abonnement</a></li>
+      <li><a href="#" class="side-link" data-tab="parametres"><i class="ti ti-settings"></i>Paramètres boutique</a></li>
+      <li><a href="ind.html" class="side-link"><i class="ti ti-arrow-back"></i>Retour au site</a></li>
+    </ul>
+
+    <div class="side-plan-box">
+      <div class="side-plan-label">Forfait actuel</div>
+      <div class="side-plan-name">Pro</div>
+      <div class="side-plan-status" id="side-plan-status"><i class="ti ti-gift"></i> Essai gratuit — 21 jours restants</div>
+    </div>
+
+    <div class="side-footer">
+      <div class="side-avatar">WQ</div>
+      <div>
+        <div class="side-user-name">WaxQueen</div>
+        <div class="side-user-role">Vendeuse · Lomé</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+    <div class="topbar">
+      <button type="button" class="top-icon topbar-hamburger" id="sidebar-toggle-btn" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+      <div class="topbar-title" id="topbar-title">Tableau de bord</div>
+      <div class="topbar-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="topbar-search-input" placeholder="Rechercher un article, une commande...">
+      </div>
+      <div class="topbar-right">
+        <div class="top-icon"><i class="ti ti-bell"></i><div class="dot"></div></div>
+        <a href="ind.html" class="btn btn-ghost btn-sm" style="border:1.5px solid var(--line-strong);"><i class="ti ti-external-link"></i> Voir ma boutique</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============================================================
+           DASHBOARD
+           ============================================================ -->
+      <section class="view active" id="view-dashboard">
+
+        <div class="trial-banner">
+          <div class="trial-banner-text">
+            <i class="ti ti-gift" style="margin-right:6px;"></i>
+            Ton <strong>1er mois gratuit</strong> se termine le <strong>10 septembre 2026</strong>. Ensuite, le forfait <strong>Pro</strong> passe à <strong>7 000 FCFA / mois</strong>.
+          </div>
+          <button class="btn btn-solid btn-sm" onclick="goTab('abonnement')">Gérer mon abonnement</button>
+        </div>
+
+        <div class="stat-grid">
+          <div class="receipt">
+            <div class="receipt-top">
+              <div class="receipt-label">Ventes du mois</div>
+              <div class="receipt-icon" style="background:var(--teal-light);color:var(--teal-dark);"><i class="ti ti-coin"></i></div>
+            </div>
+            <div class="receipt-value">312 000 <span style="font-size:13px;">FCFA</span></div>
+            <div class="receipt-delta delta-up"><i class="ti ti-arrow-up-right"></i> +22% vs juillet</div>
+          </div>
+          <div class="receipt">
+            <div class="receipt-top">
+              <div class="receipt-label">Commandes</div>
+              <div class="receipt-icon" style="background:rgba(232,98,44,0.15);color:var(--orange);"><i class="ti ti-package"></i></div>
+            </div>
+            <div class="receipt-value">14</div>
+            <div class="receipt-delta delta-up"><i class="ti ti-arrow-up-right"></i> +3 cette semaine</div>
+          </div>
+          <div class="receipt">
+            <div class="receipt-top">
+              <div class="receipt-label">Articles en ligne</div>
+              <div class="receipt-icon" style="background:rgba(242,183,5,0.18);color:var(--yellow-dark);"><i class="ti ti-hanger"></i></div>
+            </div>
+            <div class="receipt-value">8 <span style="font-size:13px;color:var(--ink-faint);">/ 60</span></div>
+            <div class="receipt-delta" style="color:var(--ink-faint);"><i class="ti ti-info-circle"></i> forfait Pro</div>
+          </div>
+          <div class="receipt">
+            <div class="receipt-top">
+              <div class="receipt-label">Note moyenne</div>
+              <div class="receipt-icon" style="background:rgba(45,122,74,0.15);color:var(--green);"><i class="ti ti-star"></i></div>
+            </div>
+            <div class="receipt-value">4.6 ★</div>
+            <div class="receipt-delta" style="color:var(--ink-faint);"><i class="ti ti-message-circle"></i> 61 avis</div>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel">
+            <div class="panel-title">Ventes de la semaine</div>
+            <div class="panel-sub">Total de mes commandes validées, en FCFA (milliers)</div>
+            <div class="chart">
+              <div class="bar-col"><div class="bar" style="height:40%;"></div><div class="bar-day">Lun</div></div>
+              <div class="bar-col"><div class="bar" style="height:55%;"></div><div class="bar-day">Mar</div></div>
+              <div class="bar-col"><div class="bar" style="height:35%;"></div><div class="bar-day">Mer</div></div>
+              <div class="bar-col"><div class="bar" style="height:70%;"></div><div class="bar-day">Jeu</div></div>
+              <div class="bar-col"><div class="bar" style="height:60%;"></div><div class="bar-day">Ven</div></div>
+              <div class="bar-col"><div class="bar" style="height:100%;background:linear-gradient(180deg,var(--yellow),var(--yellow-dark));"></div><div class="bar-day">Sam</div></div>
+              <div class="bar-col"><div class="bar" style="height:80%;"></div><div class="bar-day">Dim</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Dernières commandes</div>
+            <div class="panel-sub">Commandes reçues cette semaine</div>
+            <div class="order-list">
+              <div class="order-item">
+                <div class="order-avatar" style="background:var(--yellow-dark);">AN</div>
+                <div><div class="order-name">#FS-10479</div><div class="order-sub">Andrée N. · Robe wax dorée</div></div>
+                <div class="order-amount">35 000</div>
+              </div>
+              <div class="order-item">
+                <div class="order-avatar" style="background:var(--red);">GM</div>
+                <div><div class="order-name">#FS-10465</div><div class="order-sub">Grace M. · Robe fleurie</div></div>
+                <div class="order-amount">12 000</div>
+              </div>
+              <div class="order-item">
+                <div class="order-avatar" style="background:var(--teal);">PK</div>
+                <div><div class="order-name">#FS-10440</div><div class="order-sub">Prisca K. · Set bijoux</div></div>
+                <div class="order-amount">14 000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           MES ARTICLES
+           ============================================================ -->
+      <section class="view" id="view-produits">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">Mes articles</div>
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+              <div class="mini-search"><i class="ti ti-search"></i><input type="text" class="filter-input" data-target="produits-body" placeholder="Filtrer par article..."></div>
+              <button class="btn btn-yellow btn-sm" id="add-article-btn"><i class="ti ti-plus"></i> Ajouter un article</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+          <table>
+            <thead><tr><th>Article</th><th>Prix</th><th>Catégorie</th><th>Vues</th><th>Statut</th><th></th></tr></thead>
+            <tbody id="produits-body">
+              <tr>
+                <td class="cell-entity"><div class="entity-avatar" style="background:linear-gradient(135deg,#5C1A3A,#146B76);">👗</div><div><div class="entity-name">Robe wax dorée soirée</div><div class="entity-sub">Ajouté il y a 3 jours</div></div></td>
+                <td class="mono">35 000 FCFA</td><td>Robes</td><td class="mono">248</td>
+                <td><span class="stamp stamp-green">Publié</span></td>
+                <td><div class="row-actions"><button class="act-btn edit"><i class="ti ti-edit"></i></button><button class="act-btn reject"><i class="ti ti-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="cell-entity"><div class="entity-avatar" style="background:linear-gradient(135deg,#3B2A63,#146B76);">👗</div><div><div class="entity-name">Robe fleurie bohème</div><div class="entity-sub">Ajouté aujourd'hui</div></div></td>
+                <td class="mono">12 000 FCFA</td><td>Robes</td><td class="mono">31</td>
+                <td><span class="stamp stamp-yellow">À valider</span></td>
+                <td><div class="row-actions"><button class="act-btn edit"><i class="ti ti-edit"></i></button><button class="act-btn reject"><i class="ti ti-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="cell-entity"><div class="entity-avatar" style="background:linear-gradient(135deg,#5C1A3A,#C13B2A);">💍</div><div><div class="entity-name">Set bijoux collier + bagues</div><div class="entity-sub">Ajouté il y a 6 jours</div></div></td>
+                <td class="mono">14 000 FCFA</td><td>Bijoux</td><td class="mono">122</td>
+                <td><span class="stamp stamp-green">Publié</span></td>
+                <td><div class="row-actions"><button class="act-btn edit"><i class="ti ti-edit"></i></button><button class="act-btn reject"><i class="ti ti-trash"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           MES COMMANDES
+           ============================================================ -->
+      <section class="view" id="view-commandes">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">Mes commandes</div>
+            <div class="mini-search"><i class="ti ti-search"></i><input type="text" class="filter-input" data-target="commandes-body" placeholder="N° commande, client..."></div>
+          </div>
+          <div class="table-scroll">
+          <table>
+            <thead><tr><th>Commande</th><th>Client</th><th>Article</th><th>Montant</th><th>Paiement</th><th>Statut</th></tr></thead>
+            <tbody id="commandes-body">
+              <tr>
+                <td class="mono">#FS-10479</td><td>Andrée N.</td><td>Robe wax dorée</td><td class="mono">35 000 FCFA</td>
+                <td><span class="stamp stamp-teal">Tmoney</span></td>
+                <td><span class="stamp stamp-yellow">En livraison</span></td>
+              </tr>
+              <tr>
+                <td class="mono">#FS-10465</td><td>Grace M.</td><td>Robe fleurie bohème</td><td class="mono">12 000 FCFA</td>
+                <td><span class="stamp stamp-teal">Flooz Money</span></td>
+                <td><span class="stamp stamp-green">Livrée</span></td>
+              </tr>
+              <tr>
+                <td class="mono">#FS-10440</td><td>Prisca K.</td><td>Set bijoux collier + bagues</td><td class="mono">14 000 FCFA</td>
+                <td><span class="stamp stamp-teal">Carte bancaire</span></td>
+                <td><span class="stamp stamp-green">Livrée</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           MON ABONNEMENT
+           ============================================================ -->
+      <section class="view" id="view-abonnement">
+
+        <div class="trial-banner">
+          <div class="trial-banner-text">
+            <i class="ti ti-gift" style="margin-right:6px;"></i>
+            Tu profites actuellement de ton <strong>1er mois gratuit</strong> sur le forfait <strong>Pro</strong>. Fin de l'essai : <strong>10 septembre 2026</strong>.
+          </div>
+        </div>
+
+        <div class="plan-grid">
+          <div class="plan-card">
+            <div class="plan-card-name">Starter</div>
+            <div class="plan-card-price">3 000 <span>FCFA / mois</span></div>
+            <ul>
+              <li><i class="ti ti-check"></i> Jusqu'à 15 articles en ligne</li>
+              <li><i class="ti ti-check"></i> Boutique visible dans le catalogue</li>
+              <li><i class="ti ti-check"></i> Support par WhatsApp</li>
+            </ul>
+            <button class="btn btn-ghost" style="border:2px solid var(--ink);" onclick="changePlan('Starter')">Passer à Starter</button>
+          </div>
+          <div class="plan-card current">
+            <div class="plan-current-badge">Forfait actuel</div>
+            <div class="plan-card-name">Pro</div>
+            <div class="plan-card-price">7 000 <span>FCFA / mois</span></div>
+            <ul>
+              <li><i class="ti ti-check"></i> Jusqu'à 60 articles en ligne</li>
+              <li><i class="ti ti-check"></i> Badge « Vendeur Pro »</li>
+              <li><i class="ti ti-check"></i> Mise en avant dans les résultats de recherche</li>
+              <li><i class="ti ti-check"></i> Statistiques de ventes détaillées</li>
+            </ul>
+            <button class="btn btn-solid" disabled style="opacity:.6;cursor:default;">Forfait actuel</button>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-name">Premium</div>
+            <div class="plan-card-price">15 000 <span>FCFA / mois</span></div>
+            <ul>
+              <li><i class="ti ti-check"></i> Articles illimités</li>
+              <li><i class="ti ti-check"></i> Badge « Premium » + avant page d'accueil</li>
+              <li><i class="ti ti-check"></i> Statistiques avancées et export</li>
+              <li><i class="ti ti-check"></i> Support prioritaire 7j/7</li>
+            </ul>
+            <button class="btn btn-yellow" onclick="changePlan('Premium')">Passer à Premium</button>
+          </div>
+        </div>
+
+        <div class="panel-row" style="grid-template-columns:1fr 1fr;">
+          <div class="panel">
+            <div class="panel-title">Moyen de paiement</div>
+            <div class="panel-sub">Utilisé pour ton prochain prélèvement mensuel</div>
+            <div class="form-grid" style="grid-template-columns:1fr;">
+              <div class="field">
+                <label>Moyen de paiement</label>
+                <select id="pay-method-select">
+                  <option>Tmoney</option>
+                  <option>Flooz Money</option>
+                  <option>Carte bancaire</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Numéro / identifiant de paiement</label>
+                <input type="text" placeholder="Ex : 90 12 34 56">
+              </div>
+            </div>
+            <div style="margin-top:18px;">
+              <button class="stamp stamp-teal" style="cursor:pointer;" id="save-payment-btn">Enregistrer</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Historique de facturation</div>
+            <div class="panel-sub">Tes derniers paiements d'abonnement</div>
+            <div class="order-list">
+              <div class="order-item">
+                <div class="order-avatar" style="background:var(--yellow-dark);"><i class="ti ti-gift" style="font-size:15px;"></i></div>
+                <div><div class="order-name">Essai gratuit — Pro</div><div class="order-sub">10 août 2026</div></div>
+                <div class="order-amount">0 FCFA</div>
+              </div>
+              <div class="order-item">
+                <div class="order-avatar" style="background:var(--ink-faint);"><i class="ti ti-clock" style="font-size:15px;"></i></div>
+                <div><div class="order-name">Prochain prélèvement — Pro</div><div class="order-sub">10 septembre 2026</div></div>
+                <div class="order-amount">7 000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           PARAMÈTRES BOUTIQUE
+           ============================================================ -->
+      <section class="view" id="view-parametres">
+        <div class="panel" style="max-width:720px;">
+          <div class="panel-title">Paramètres de ma boutique</div>
+          <div class="panel-sub">Ces informations sont visibles par les acheteurs sur ta page vendeur.</div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Nom de la boutique</label>
+              <input type="text" value="WaxQueen">
+            </div>
+            <div class="field">
+              <label>Ville</label>
+              <select><option>Lomé</option><option>Kara</option><option>Sokodé</option></select>
+            </div>
+            <div class="field">
+              <label>Téléphone WhatsApp</label>
+              <input type="text" value="+228 90 12 34 56">
+            </div>
+            <div class="field">
+              <label>Réseau d'origine</label>
+              <select><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>Aucun</option></select>
+            </div>
+            <div class="field field-full">
+              <label>Description de la boutique</label>
+              <textarea rows="3">Robes et tenues wax pour toutes les occasions. Livraison rapide sur Lomé et environs.</textarea>
+            </div>
+          </div>
+          <div style="margin-top:22px;display:flex;gap:10px;">
+            <button class="stamp stamp-teal" style="cursor:pointer;" id="save-settings-btn">Enregistrer</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Modifications enregistrées.</div>
+
+<!-- ============================================================
+     MODAL — Ajouter / Modifier un article (avec photos)
+     ============================================================ -->
+<div class="modal-overlay" id="article-modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" id="article-modal-close" aria-label="Fermer"><i class="ti ti-x"></i></button>
+    <div class="modal-title" id="article-modal-title">Ajouter un article</div>
+    <div class="modal-sub">Ajoute jusqu'à 5 photos. La première photo sera utilisée comme photo principale.</div>
+
+    <div class="photo-dropzone" id="photo-dropzone">
+      <i class="ti ti-photo-plus"></i>
+      <div class="photo-dropzone-text">Clique ici ou glisse tes photos</div>
+      <div class="photo-dropzone-sub">JPG, PNG — 5 photos maximum</div>
+      <input type="file" id="photo-input" accept="image/*" multiple style="display:none;">
+    </div>
+    <div class="photo-grid" id="photo-grid"></div>
+
+    <div class="form-grid" style="margin-bottom:18px;">
+      <div class="field field-full">
+        <label>Nom de l'article</label>
+        <input type="text" id="article-name" placeholder="Ex : Robe wax dorée soirée">
+      </div>
+      <div class="field">
+        <label>Prix (FCFA)</label>
+        <input type="text" id="article-price" placeholder="Ex : 18000">
+      </div>
+      <div class="field">
+        <label>Catégorie</label>
+        <select id="article-category">
+          <option>Robes</option>
+          <option>Chaussures</option>
+          <option>Sacs</option>
+          <option>Vestes</option>
+          <option>T-shirts</option>
+          <option>Bijoux</option>
+          <option>Pantalons</option>
+        </select>
+      </div>
+      <div class="field field-full">
+        <label>Description</label>
+        <textarea rows="3" id="article-desc" placeholder="Taille, état, matière..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" style="border:1.5px solid var(--line-strong);" id="article-cancel-btn">Annuler</button>
+      <button class="btn btn-solid" id="article-save-btn">Publier l'article</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const titles = {
+  dashboard:'Tableau de bord',
+  produits:'Mes articles',
+  commandes:'Mes commandes',
+  abonnement:'Mon abonnement',
+  parametres:'Paramètres boutique'
+};
+
+function goTab(tab){
+  const link = document.querySelector('.side-link[data-tab="'+tab+'"]');
+  if(link) link.click();
+}
+
+document.querySelectorAll('.side-link[data-tab]').forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    const tab = link.dataset.tab;
+    document.querySelectorAll('.side-link[data-tab]').forEach(l=>l.classList.remove('active'));
+    link.classList.add('active');
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+tab).classList.add('active');
+    document.getElementById('topbar-title').textContent = titles[tab];
+    closeSidebar();
+  });
+});
+
+/* ---------------- MOBILE SIDEBAR TOGGLE ---------------- */
+const sidebarEl = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+function openSidebar(){
+  sidebarEl.classList.add('open');
+  sidebarOverlay.classList.add('open');
+}
+function closeSidebar(){
+  sidebarEl.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
+}
+sidebarToggleBtn.addEventListener('click', ()=>{
+  sidebarEl.classList.contains('open') ? closeSidebar() : openSidebar();
+});
+sidebarOverlay.addEventListener('click', closeSidebar);
+
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toast.classList.remove('show'), 2400);
+}
+
+function changePlan(planName){
+  showToast('Changement vers le forfait ' + planName + ' pris en compte (démo).');
+}
+
+/* ============================================================
+   MODAL ARTICLE — ajout / modification avec photos
+   ============================================================ */
+const MAX_PHOTOS = 5;
+let articlePhotos = [];      // tableau de data-URLs (aperçu local)
+let editingRow = null;       // ligne <tr> en cours de modification, ou null si ajout
+
+const modalOverlay = document.getElementById('article-modal-overlay');
+const modalTitle = document.getElementById('article-modal-title');
+const photoDropzone = document.getElementById('photo-dropzone');
+const photoInput = document.getElementById('photo-input');
+const photoGrid = document.getElementById('photo-grid');
+const articleNameInput = document.getElementById('article-name');
+const articlePriceInput = document.getElementById('article-price');
+const articleCategoryInput = document.getElementById('article-category');
+const articleDescInput = document.getElementById('article-desc');
+const articleSaveBtn = document.getElementById('article-save-btn');
+
+function renderPhotoGrid(){
+  photoGrid.innerHTML = articlePhotos.map((src, i) => `
+    <div class="photo-thumb">
+      <img src="${src}" alt="Photo article ${i+1}">
+      ${i === 0 ? '<div class="cover-tag">Principale</div>' : ''}
+      <button type="button" class="photo-thumb-remove" data-index="${i}" aria-label="Retirer la photo"><i class="ti ti-x"></i></button>
+    </div>
+  `).join('') + (articlePhotos.length < MAX_PHOTOS ? `
+    <button type="button" class="photo-thumb-add" id="photo-add-more" aria-label="Ajouter une photo"><i class="ti ti-plus"></i></button>
+  ` : '');
+
+  photoGrid.querySelectorAll('.photo-thumb-remove').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      articlePhotos.splice(parseInt(btn.dataset.index, 10), 1);
+      renderPhotoGrid();
+    });
+  });
+  const addMore = document.getElementById('photo-add-more');
+  if(addMore) addMore.addEventListener('click', ()=>photoInput.click());
+
+  // la dropzone principale se cache une fois qu'on a au moins une photo, pour laisser la place à la grille
+  photoDropzone.style.display = articlePhotos.length === 0 ? 'block' : 'none';
+}
+
+function addPhotoFiles(fileList){
+  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  const remaining = MAX_PHOTOS - articlePhotos.length;
+  if(remaining <= 0){
+    showToast('Tu as déjà 5 photos, c\'est le maximum.');
+    return;
+  }
+  files.slice(0, remaining).forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e => {
+      articlePhotos.push(e.target.result);
+      renderPhotoGrid();
+    };
+    reader.readAsDataURL(file);
+  });
+  if(files.length > remaining){
+    showToast('Maximum 5 photos par article — les suivantes n\'ont pas été ajoutées.');
+  }
+}
+
+photoDropzone.addEventListener('click', ()=>photoInput.click());
+photoInput.addEventListener('change', e => { addPhotoFiles(e.target.files); photoInput.value = ''; });
+
+['dragenter','dragover'].forEach(evt=>{
+  photoDropzone.addEventListener(evt, e => { e.preventDefault(); photoDropzone.classList.add('dragover'); });
+});
+['dragleave','drop'].forEach(evt=>{
+  photoDropzone.addEventListener(evt, e => { e.preventDefault(); photoDropzone.classList.remove('dragover'); });
+});
+photoDropzone.addEventListener('drop', e=>{
+  if(e.dataTransfer && e.dataTransfer.files) addPhotoFiles(e.dataTransfer.files);
+});
+
+function openArticleModal(row){
+  editingRow = row || null;
+  articlePhotos = [];
+
+  if(row){
+    modalTitle.textContent = 'Modifier l\'article';
+    articleSaveBtn.textContent = 'Enregistrer les modifications';
+    articleNameInput.value = row.querySelector('.entity-name').textContent.trim();
+    articlePriceInput.value = row.dataset.price || row.children[1].textContent.replace(/[^\d]/g,'');
+    articleCategoryInput.value = row.children[2].textContent.trim();
+    articleDescInput.value = row.dataset.desc || '';
+    const existingImg = row.querySelector('.entity-avatar img');
+    if(existingImg) articlePhotos.push(existingImg.src);
+  } else {
+    modalTitle.textContent = 'Ajouter un article';
+    articleSaveBtn.textContent = 'Publier l\'article';
+    articleNameInput.value = '';
+    articlePriceInput.value = '';
+    articleCategoryInput.selectedIndex = 0;
+    articleDescInput.value = '';
+  }
+  renderPhotoGrid();
+  modalOverlay.classList.add('open');
+}
+
+function closeArticleModal(){
+  modalOverlay.classList.remove('open');
+}
+
+document.getElementById('article-modal-close').addEventListener('click', closeArticleModal);
+document.getElementById('article-cancel-btn').addEventListener('click', closeArticleModal);
+modalOverlay.addEventListener('click', e => { if(e.target === modalOverlay) closeArticleModal(); });
+
+articleSaveBtn.addEventListener('click', ()=>{
+  const name = articleNameInput.value.trim();
+  const price = articlePriceInput.value.trim();
+  if(!name || !price){
+    showToast('Merci de renseigner au moins le nom et le prix.');
+    return;
+  }
+  if(articlePhotos.length === 0){
+    showToast('Ajoute au moins une photo avant de publier ton article.');
+    return;
+  }
+  const category = articleCategoryInput.value;
+  const desc = articleDescInput.value.trim();
+  const priceFmt = parseInt(price, 10).toLocaleString('fr-FR').replace(/,/g,' ') + ' FCFA';
+
+  if(editingRow){
+    editingRow.querySelector('.entity-name').textContent = name;
+    editingRow.dataset.price = price;
+    editingRow.dataset.desc = desc;
+    editingRow.children[1].textContent = priceFmt;
+    editingRow.children[2].textContent = category;
+    editingRow.querySelector('.entity-avatar').innerHTML = `<img src="${articlePhotos[0]}" alt="${name}">`;
+    showToast('Article modifié.');
+  } else {
+    const tbody = document.getElementById('produits-body');
+    const tr = document.createElement('tr');
+    tr.dataset.price = price;
+    tr.dataset.desc = desc;
+    tr.innerHTML = `
+      <td class="cell-entity"><div class="entity-avatar"><img src="${articlePhotos[0]}" alt="${name}"></div><div><div class="entity-name">${name}</div><div class="entity-sub">Ajouté aujourd'hui</div></div></td>
+      <td class="mono">${priceFmt}</td><td>${category}</td><td class="mono">0</td>
+      <td><span class="stamp stamp-yellow">À valider</span></td>
+      <td><div class="row-actions"><button class="act-btn edit"><i class="ti ti-edit"></i></button><button class="act-btn reject"><i class="ti ti-trash"></i></button></div></td>
+    `;
+    tbody.appendChild(tr);
+    wireRowActions(tr);
+    updateArticleCount();
+    showToast('Article publié ! Il sera visible après validation.');
+  }
+  closeArticleModal();
+});
+
+function updateArticleCount(){
+  const count = document.getElementById('produits-body').children.length;
+  const countEl = document.querySelector('.side-link[data-tab="produits"] .count');
+  if(countEl) countEl.textContent = count;
+}
+
+function wireRowActions(row){
+  row.querySelector('.act-btn.edit').addEventListener('click', ()=>openArticleModal(row));
+  row.querySelector('.act-btn.reject').addEventListener('click', ()=>{
+    row.remove();
+    updateArticleCount();
+    showToast('Article supprimé.');
+  });
+}
+
+document.getElementById('add-article-btn').addEventListener('click', ()=>openArticleModal(null));
+document.querySelectorAll('#produits-body tr').forEach(wireRowActions);
+
+document.getElementById('save-payment-btn').addEventListener('click', ()=>{
+  showToast('Moyen de paiement mis à jour.');
+});
+document.getElementById('save-settings-btn').addEventListener('click', ()=>{
+  showToast('Paramètres de la boutique enregistrés.');
+});
+
+// simple table filter (par onglet)
+document.querySelectorAll('.filter-input').forEach(input=>{
+  input.addEventListener('input',()=>{
+    const body = document.getElementById(input.dataset.target);
+    const q = input.value.trim().toLowerCase();
+    body.querySelectorAll('tr').forEach(row=>{
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+});
+
+// topbar search — cherche dans mes articles et mes commandes, bascule sur le bon onglet
+const topbarSearchInput = document.getElementById('topbar-search-input');
+const searchableBodies = ['produits-body','commandes-body'];
+topbarSearchInput.addEventListener('input', ()=>{
+  const q = topbarSearchInput.value.trim().toLowerCase();
+  if(!q){
+    searchableBodies.forEach(id=>{
+      document.getElementById(id).querySelectorAll('tr').forEach(row=>row.style.display = '');
+    });
+    return;
+  }
+  let firstMatchTab = null;
+  searchableBodies.forEach(id=>{
+    const body = document.getElementById(id);
+    let hasMatch = false;
+    body.querySelectorAll('tr').forEach(row=>{
+      const match = row.textContent.toLowerCase().includes(q);
+      row.style.display = match ? '' : 'none';
+      if(match) hasMatch = true;
+    });
+    if(hasMatch && !firstMatchTab){
+      firstMatchTab = body.closest('.view').id.replace('view-','');
+    }
+  });
+  if(firstMatchTab){
+    const link = document.querySelector('.side-link[data-tab="'+firstMatchTab+'"]');
+    if(link && !link.classList.contains('active')) link.click();
+  }
+});
+</script>
+
+</body>
+</html>
