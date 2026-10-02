@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Occasion — ADORA</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+
+/* ============================================================
+   TOKENS — "Marché & Tampon" : carnet de vente, tampon encreur,
+   papier kraft, couleurs de wax et de la lagune de l'Ogooué.
+   ============================================================ */
+:root{
+  --paper:#FBF3E7;
+  --paper-dark:#F0E3C9;
+  --paper-deep:#E7D6B2;
+  --ink:#1F2B1E;
+  --ink-soft:#54614F;
+  --ink-faint:#8B937F;
+  --teal:#146B76;
+  --teal-dark:#0D4A52;
+  --teal-light:#DCEEEF;
+  --yellow:#F2B705;
+  --yellow-dark:#C4930A;
+  --orange:#E8622C;
+  --red:#C13B2A;
+  --terracotta:#B85C3E;
+  --terracotta-dark:#8F4530;
+  --terracotta-light:#F3E1D6;
+  --line:rgba(31,43,30,0.14);
+  --line-strong:rgba(31,43,30,0.32);
+
+  --font-display:'Fraunces', 'Georgia', serif;
+  --font-body:'Work Sans', system-ui, sans-serif;
+  --font-mono:'Space Mono', monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+button{cursor:pointer;font-family:var(--font-body);}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:var(--ink-faint);border-radius:4px;}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+
+/* ---------- typography helpers ---------- */
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+}
+.mark{
+  background:linear-gradient(transparent 60%, var(--terracotta-light) 60%);
+  padding:0 3px;
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;letter-spacing:-0.01em;}
+
+/* ---------- ink stamp (signature element) ---------- */
+.stamp{
+  display:inline-flex;align-items:center;gap:6px;
+  border:2px solid currentColor;
+  outline:1px solid currentColor;
+  outline-offset:3px;
+  padding:6px 12px;
+  border-radius:3px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  filter:url(#inkRough);
+}
+.stamp-teal{color:var(--teal-dark);}
+.stamp-red{color:var(--red);}
+.stamp-orange{color:var(--orange);}
+.stamp-ink{color:var(--ink);}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 24px;
+  border-radius:4px;
+  font-size:14px;
+  font-weight:700;
+  border:2px solid var(--ink);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s cubic-bezier(.2,.8,.2,1), background .2s ease, border-color .2s ease;
+}
+.btn:active{transform:translateY(1px);}
+.btn-solid{background:var(--teal);border-color:var(--teal-dark);color:var(--paper);}
+.btn-solid:hover{background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 10px 22px rgba(13,74,82,0.28);}
+.btn-yellow{background:var(--yellow);border-color:var(--yellow-dark);color:var(--ink);}
+.btn-yellow:hover{background:var(--yellow-dark);transform:translateY(-2px);box-shadow:0 10px 22px rgba(196,147,10,0.28);}
+.btn-ghost{background:transparent;color:var(--ink);}
+.btn-ghost:hover{background:rgba(31,43,30,0.06);}
+.btn-ghost-paper{background:transparent;border-color:rgba(251,243,231,0.5);color:var(--paper);}
+.btn-ghost-paper:hover{background:rgba(251,243,231,0.1);border-color:var(--paper);}
+.btn-sm{padding:8px 14px;font-size:12px;}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:72px;display:flex;align-items:center;
+  background:rgba(251,243,231,0.85);
+  backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1.5px dashed var(--line-strong);
+  box-shadow:0 1px 0 rgba(31,43,30,0.03);
+  transition:box-shadow .3s ease, background .3s ease;
+}
+nav.scrolled{
+  background:rgba(251,243,231,0.94);
+  box-shadow:0 10px 30px rgba(31,43,30,0.08);
+}
+.nav-inner{max-width:1200px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+.nav-logo{display:flex;align-items:center;gap:12px;transition:opacity .2s ease, transform .2s ease;min-width:0;flex-shrink:1;}
+.nav-logo:hover{opacity:0.82;}
+.brand-mark{
+  height:38px;width:auto;flex-shrink:0;
+  display:block;
+  filter:drop-shadow(0 2px 5px rgba(31,43,30,0.12));
+}
+.logo-text{font-family:var(--font-display);font-size:23px;font-weight:600;letter-spacing:0.015em;white-space:nowrap;}
+.logo-sub{
+  font-family:var(--font-mono);font-size:10px;color:var(--terracotta-dark);
+  border:1px solid var(--terracotta-dark);border-radius:20px;padding:2px 8px;margin-left:8px;
+  text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;flex-shrink:0;
+}
+.nav-links{display:flex;align-items:center;gap:30px;list-style:none;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--ink-soft);position:relative;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a.active{color:var(--ink);}
+.nav-links a.active::after{
+  content:'';position:absolute;bottom:-20px;left:0;right:0;height:2px;background:var(--orange);
+}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-icon{
+  width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--line-strong);border-radius:6px;color:var(--ink-soft);font-size:17px;
+  background:transparent;transition:all .2s;position:relative;
+}
+.nav-icon:hover{border-color:var(--ink);color:var(--ink);}
+.badge-dot{
+  position:absolute;top:-6px;right:-6px;min-width:16px;height:16px;background:var(--red);
+  border-radius:50%;border:1.5px solid var(--paper);color:var(--paper);font-family:var(--font-mono);
+  font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+
+/* ---------- nav search dropdown (accessible from anywhere on the page) ---------- */
+.nav-search-drop{
+  position:fixed;top:72px;left:0;right:0;z-index:99;
+  background:var(--paper);border-bottom:2px dashed var(--line-strong);
+  box-shadow:0 12px 24px rgba(31,43,30,0.1);
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .25s ease, opacity .2s ease;
+}
+.nav-search-drop.open{max-height:110px;opacity:1;}
+.nav-search-drop-inner{max-width:1200px;margin:0 auto;padding:18px 24px;}
+.nav-search-form{
+  display:flex;align-items:stretch;gap:0;
+  border:2px solid var(--ink);border-radius:4px;overflow:hidden;background:var(--paper);
+}
+.nav-search-form i{align-self:center;padding:0 14px;color:var(--ink-faint);font-size:18px;}
+.nav-search-form input{
+  flex:1;border:none;outline:none;background:none;font-family:var(--font-mono);
+  font-size:14px;color:var(--ink);padding:14px 4px;
+}
+.nav-search-form input::placeholder{color:var(--ink-faint);}
+.nav-search-form button{
+  border:none;border-left:2px solid var(--ink);background:var(--yellow);color:var(--ink);
+  font-weight:700;font-size:13px;padding:0 22px;transition:background .2s;
+}
+.nav-search-form button:hover{background:var(--yellow-dark);}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:96px;position:relative;}
+.hero-inner{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding:40px 0 72px;}
+
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes heroFadeIn{from{opacity:0;transform:translateY(12px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.hero-left > *{opacity:0;animation:heroFadeUp .8s cubic-bezier(.16,1,.3,1) forwards;}
+.hero-left > *:nth-child(1){animation-delay:.02s;}
+.hero-left > *:nth-child(2){animation-delay:.1s;}
+.hero-left > *:nth-child(3){animation-delay:.18s;}
+.hero-left > *:nth-child(4){animation-delay:.26s;}
+.hero-left > *:nth-child(5){animation-delay:.34s;}
+.hero-left > *:nth-child(6){animation-delay:.4s;}
+.hero-right{opacity:0;animation:heroFadeIn 1s cubic-bezier(.16,1,.3,1) .22s forwards;}
+@media (prefers-reduced-motion: reduce){
+  .hero-left > *, .hero-right{animation:none;opacity:1;}
+}
+
+.hero-eyebrow-row{margin-bottom:26px;}
+.hero-h1{
+  font-size:clamp(38px,5.4vw,64px);
+  font-weight:600;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  margin-bottom:22px;
+  color:var(--ink);
+}
+.hero-sub{font-size:16px;color:var(--ink-soft);max-width:440px;margin-bottom:30px;line-height:1.7;}
+
+.receipt-search{
+  display:flex;align-items:stretch;gap:0;
+  border:2px solid var(--ink);border-radius:4px;overflow:hidden;
+  max-width:480px;margin-bottom:22px;background:var(--paper);
+}
+.receipt-search i{align-self:center;padding:0 14px;color:var(--ink-faint);font-size:18px;}
+.receipt-search input{
+  flex:1;border:none;outline:none;background:none;font-family:var(--font-mono);
+  font-size:13px;color:var(--ink);padding:14px 4px;
+}
+.receipt-search input::placeholder{color:var(--ink-faint);}
+.receipt-search button{
+  border:none;border-left:2px solid var(--ink);background:var(--yellow);color:var(--ink);
+  font-weight:700;font-size:13px;padding:0 22px;transition:background .2s;
+}
+.receipt-search button:hover{background:var(--yellow-dark);}
+
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:38px;}
+.chip{
+  padding:6px 14px;border:1.5px solid var(--line-strong);border-radius:20px;
+  font-size:12px;color:var(--ink-soft);transition:all .2s;
+}
+.chip:hover{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-light);}
+
+.hero-stats{display:flex;gap:0;}
+.stat-stub{padding:0 26px;border-right:2px dashed var(--line-strong);}
+.stat-stub:first-child{padding-left:0;}
+.stat-stub:last-child{border-right:none;}
+.stat-num{font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--teal-dark);}
+.stat-lab{font-size:11px;color:var(--ink-faint);margin-top:2px;max-width:120px;}
+
+/* --- Corkboard visual --- */
+.corkboard{
+  position:relative;height:540px;border-radius:10px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(31,43,30,0.05) 1.5px, transparent 2px),
+    radial-gradient(circle at 60% 70%, rgba(31,43,30,0.05) 1.5px, transparent 2px),
+    radial-gradient(circle at 80% 20%, rgba(31,43,30,0.05) 1.5px, transparent 2px),
+    var(--paper-deep);
+  background-size:34px 34px, 28px 28px, 40px 40px, auto;
+  border:1px solid var(--line);
+}
+.pin-card{
+  position:absolute;width:280px;background:var(--paper);border:1px solid var(--line-strong);
+  border-radius:2px;box-shadow:0 14px 28px rgba(31,43,30,0.18);padding:10px 10px 14px;
+}
+.pin-card-main{top:38px;left:36px;transform:rotate(-3deg);z-index:2;}
+.pin-photo{
+  height:210px;border-radius:2px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#2E7D6B 0%,#146B76 60%,#0D4A52 100%);
+  display:flex;align-items:center;justify-content:center;font-size:70px;
+}
+.washi{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-2deg);
+  width:90px;height:24px;background:rgba(242,183,5,0.75);
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+.pin-card-body{padding-top:12px;}
+.pin-seller{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.pin-seller-name{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);}
+.pin-avatar{
+  width:24px;height:24px;border-radius:50%;background:var(--orange);color:var(--paper);
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);
+}
+.pin-title{font-weight:700;font-size:15px;margin-bottom:6px;}
+.pin-price-row{display:flex;align-items:center;justify-content:space-between;}
+.pin-price{font-family:var(--font-mono);font-weight:700;font-size:17px;color:var(--teal-dark);}
+.pin-price-old{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);text-decoration:line-through;margin-left:6px;}
+
+.note-card{
+  position:absolute;background:var(--paper);border:1px solid var(--line-strong);
+  border-radius:2px;padding:12px 14px;box-shadow:0 10px 24px rgba(31,43,30,0.15);
+  font-size:12px;max-width:190px;z-index:3;
+}
+.note-1{top:8px;right:6px;transform:rotate(4deg);}
+.note-2{bottom:26px;right:-8px;transform:rotate(-4deg);}
+.note-icon{font-size:16px;margin-bottom:4px;}
+.note-title{font-weight:700;}
+.note-sub{color:var(--ink-faint);font-size:11px;}
+
+/* ============================================================
+   PROMO TICKER
+   ============================================================ */
+.ticker{
+  background:var(--ink);border-top:2px dashed var(--yellow);border-bottom:2px dashed var(--yellow);
+  overflow:hidden;position:relative;
+}
+.ticker-track{display:flex;animation:scroll 32s linear infinite;width:max-content;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ticker-item{
+  display:flex;align-items:center;gap:8px;padding:13px 36px;white-space:nowrap;
+  font-family:var(--font-mono);font-size:12px;color:var(--paper-deep);
+  border-right:1px dashed rgba(251,243,231,0.25);
+}
+.ticker-item i{color:var(--yellow);font-size:14px;}
+.ticker-item strong{color:var(--yellow);}
+
+/* ============================================================
+   PROMO CRATES
+   ============================================================ */
+.promos-section{padding:60px 0 0;}
+.promos-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px;}
+.crate{
+  border-radius:8px;padding:28px;min-height:210px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;
+  transition:transform .25s ease;color:var(--paper);
+}
+.crate:hover{transform:translateY(-4px);}
+.crate-1{background:repeating-linear-gradient(135deg,#C13B2A 0 26px,#A5301F 26px 52px);grid-row:span 2;min-height:344px;}
+.crate-2{background:repeating-linear-gradient(135deg,#146B76 0 26px,#0D4A52 26px 52px);}
+.crate-3{background:repeating-linear-gradient(135deg,#E8622C 0 26px,#C24E20 26px 52px);}
+.crate-badge{
+  position:absolute;top:18px;right:18px;background:rgba(31,43,30,0.55);
+  border:1px solid rgba(251,243,231,0.4);color:var(--paper);padding:5px 12px;border-radius:20px;
+  font-family:var(--font-mono);font-size:10.5px;
+}
+.crate-label{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.85;margin-bottom:6px;}
+.crate-title{font-family:var(--font-display);font-size:30px;line-height:1.15;margin-bottom:10px;}
+.crate-cta{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;font-weight:700;}
+
+/* ============================================================
+   CATEGORIES — hang tags
+   ============================================================ */
+.section{padding:64px 0;}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:30px;}
+.section-title{font-size:30px;color:var(--ink);}
+.see-all{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--teal-dark);font-family:var(--font-mono);}
+
+.tags-row{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;}
+.hang-tag{
+  position:relative;background:var(--paper);border:1.5px solid var(--line-strong);border-radius:6px;
+  padding:22px 10px 14px;text-align:center;cursor:pointer;transition:all .2s ease;
+}
+.hang-tag::before{
+  content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);
+  width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line-strong);background:var(--paper-deep);
+}
+.hang-tag:hover,.hang-tag.active{border-color:var(--teal);background:var(--teal-light);transform:translateY(-3px);}
+.tag-icon{font-size:26px;margin-bottom:8px;}
+.tag-name{font-size:12.5px;font-weight:700;}
+.tag-count{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:2px;}
+
+/* ============================================================
+   PRODUCTS
+   ============================================================ */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:26px;flex-wrap:wrap;}
+.filter-btn{
+  padding:8px 16px;border:1.5px solid var(--line-strong);border-radius:20px;background:transparent;
+  font-size:12.5px;color:var(--ink-soft);transition:all .2s;font-weight:500;
+}
+.filter-btn:hover{border-color:var(--ink);color:var(--ink);}
+.filter-btn.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+.filter-spacer{flex:1;}
+.sort-select{
+  padding:8px 14px;border:1.5px solid var(--line-strong);border-radius:6px;background:var(--paper);
+  font-size:12.5px;color:var(--ink-soft);font-family:var(--font-body);
+}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.product-card{
+  position:relative;background:var(--paper);border:1.5px solid var(--line-strong);border-radius:6px;
+  overflow:visible;transition:all .25s ease;
+}
+.product-card:hover{border-color:var(--ink);transform:translateY(-4px);box-shadow:0 16px 30px rgba(31,43,30,0.14);}
+.card-hole{
+  position:absolute;top:10px;left:14px;width:9px;height:9px;border-radius:50%;
+  background:var(--paper);border:1.5px solid var(--line-strong);z-index:3;
+}
+.product-img-wrap{position:relative;height:190px;overflow:hidden;border-radius:5px 5px 0 0;}
+.product-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;transition:transform .4s ease;}
+.product-card:hover .product-img{transform:scale(1.05);}
+.p-bg-1{background:linear-gradient(135deg,#3B2A63,#146B76);}
+.p-bg-2{background:linear-gradient(135deg,#C13B2A,#E8622C);}
+.p-bg-3{background:linear-gradient(135deg,#0D4A52,#2E7D6B);}
+.p-bg-4{background:linear-gradient(135deg,#8A4A1E,#E8622C);}
+.p-bg-5{background:linear-gradient(135deg,#4A3B1E,#F2B705);}
+.p-bg-6{background:linear-gradient(135deg,#146B76,#3B2A63);}
+.p-bg-7{background:linear-gradient(135deg,#5C1A3A,#C13B2A);}
+.p-bg-8{background:linear-gradient(135deg,#1E4A3B,#146B76);}
+.p-stamp{position:absolute;top:12px;left:32px;padding:4px 9px;font-size:9.5px;z-index:2;transform:rotate(-9deg);}
+.product-fav{
+  position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;
+  background:rgba(251,243,231,0.85);display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--ink-soft);z-index:2;transition:all .2s;border:1px solid var(--line-strong);
+}
+.product-fav:hover{background:var(--red);color:var(--paper);border-color:var(--red);}
+.product-info{padding:14px 14px 16px;}
+.product-name{font-size:14px;font-weight:700;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.product-seller-row{display:flex;align-items:center;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
+.verified-icon{font-size:12px;color:var(--teal);}
+.product-seller-name{font-size:11.5px;color:var(--ink-faint);}
+.product-location{font-size:10.5px;color:var(--ink-faint);display:flex;align-items:center;gap:3px;margin-left:auto;}
+.product-footer{display:flex;align-items:center;justify-content:space-between;}
+.price-current{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--teal-dark);}
+.price-old{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);text-decoration:line-through;}
+.size-tags{display:flex;gap:4px;}
+.size-tag{padding:2px 6px;border:1px solid var(--line-strong);border-radius:3px;font-size:9.5px;color:var(--ink-soft);font-family:var(--font-mono);}
+.product-add-btn{
+  width:32px;height:32px;border-radius:50%;background:var(--teal);color:var(--paper);border:1.5px solid var(--teal-dark);
+  font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.product-add-btn:hover{background:var(--teal-dark);transform:scale(1.08);}
+
+/* ============================================================
+   SELLERS — ledger
+   ============================================================ */
+.ledger{border:1.5px solid var(--line-strong);border-radius:8px;overflow:hidden;background:var(--paper);}
+.ledger-head,.ledger-row{
+  display:grid;grid-template-columns:64px 2fr 1.4fr 0.8fr 0.8fr 0.8fr 1.6fr;
+  align-items:center;gap:14px;padding:16px 20px;
+}
+.ledger-head{
+  font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--ink-faint);border-bottom:2px dashed var(--line-strong);background:var(--paper-dark);
+}
+.ledger-row{border-bottom:1px dashed var(--line);}
+.ledger-row:last-child{border-bottom:none;}
+.ledger-row:nth-child(even){background:rgba(31,43,30,0.02);}
+.rank-cell{font-family:var(--font-mono);font-weight:700;font-size:15px;}
+.seller-cell{display:flex;align-items:center;gap:10px;}
+.seller-avatar-sm{
+  width:36px;height:36px;border-radius:50%;color:var(--paper);font-family:var(--font-mono);font-weight:700;
+  font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.seller-cell-name{font-weight:700;font-size:13.5px;}
+.city-cell{font-size:12.5px;color:var(--ink-soft);display:flex;align-items:center;gap:4px;}
+.metric-cell{font-family:var(--font-mono);font-weight:700;font-size:13.5px;}
+.metric-cell.gold{color:var(--yellow-dark);}
+.tags-cell{display:flex;gap:6px;flex-wrap:wrap;}
+.mini-tag{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid;}
+.mini-tag.gold{background:rgba(242,183,5,0.15);border-color:var(--yellow-dark);color:var(--yellow-dark);}
+.mini-tag.teal{background:var(--teal-light);border-color:var(--teal);color:var(--teal-dark);}
+.mini-tag.orange{background:rgba(232,98,44,0.12);border-color:var(--orange);color:var(--orange);}
+.shop-link{font-family:var(--font-mono);font-size:11.5px;font-weight:700;color:var(--teal-dark);white-space:nowrap;}
+
+/* ============================================================
+   HOW IT WORKS — route stamps
+   ============================================================ */
+.how-section{padding:76px 0;background:var(--paper-dark);border-top:2px dashed var(--line-strong);border-bottom:2px dashed var(--line-strong);}
+.how-header{text-align:center;margin-bottom:54px;}
+.how-title{font-size:32px;margin-bottom:10px;}
+.how-sub{font-size:14.5px;color:var(--ink-soft);max-width:420px;margin:0 auto;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);position:relative;}
+.how-grid::before{
+  content:'';position:absolute;top:34px;left:12.5%;right:12.5%;height:0;
+  border-top:2px dashed var(--line-strong);
+}
+.how-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 20px;position:relative;}
+.how-num{
+  width:68px;height:68px;border-radius:50%;background:var(--paper);border:2px solid var(--ink);
+  outline:1px solid var(--ink);outline-offset:3px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:700;font-size:22px;margin-bottom:20px;position:relative;z-index:1;
+  filter:url(#inkRough);
+}
+.how-step:nth-child(odd) .how-num{color:var(--teal-dark);}
+.how-step:nth-child(even) .how-num{color:var(--orange);}
+.how-step-title{font-family:var(--font-display);font-size:17px;margin-bottom:8px;}
+.how-step-text{font-size:12.5px;color:var(--ink-soft);line-height:1.6;max-width:220px;}
+
+/* ============================================================
+   TESTIMONIALS — taped notes
+   ============================================================ */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.taped-note{
+  position:relative;background:var(--paper);border:1px solid var(--line-strong);border-radius:2px;
+  padding:26px 22px 22px;box-shadow:0 10px 22px rgba(31,43,30,0.08);
+}
+.taped-note:nth-child(1){transform:rotate(-1.4deg);}
+.taped-note:nth-child(2){transform:rotate(1deg);}
+.taped-note:nth-child(3){transform:rotate(-0.8deg);}
+.taped-note::before{
+  content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-2deg);
+  width:70px;height:20px;background:rgba(242,183,5,0.7);box-shadow:0 2px 5px rgba(0,0,0,0.12);
+}
+.trust-stars{color:var(--yellow-dark);font-size:13px;margin-bottom:12px;}
+.trust-text{font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin-bottom:18px;font-style:italic;}
+.trust-user{display:flex;align-items:center;gap:10px;}
+.trust-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--paper);flex-shrink:0;font-family:var(--font-mono);}
+.trust-name{font-size:12.5px;font-weight:700;}
+.trust-loc{font-size:10.5px;color:var(--ink-faint);}
+
+/* ============================================================
+   CTA — crate panel
+   ============================================================ */
+.cta-crate{
+  background:
+    repeating-linear-gradient(90deg, rgba(251,243,231,0.035) 0 2px, transparent 2px 38px),
+    var(--ink);
+  border-radius:10px;padding:64px 48px;text-align:center;color:var(--paper);position:relative;overflow:hidden;
+}
+.cta-title{font-size:clamp(28px,4vw,44px);margin-bottom:14px;}
+.cta-title .mark{background:linear-gradient(transparent 62%, var(--yellow) 62%);color:var(--ink);}
+.cta-sub{font-size:15px;color:rgba(251,243,231,0.72);max-width:480px;margin:0 auto 32px;line-height:1.7;}
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+.cta-stats{display:flex;justify-content:center;gap:0;flex-wrap:wrap;}
+.cta-stat{padding:0 30px;border-right:1px dashed rgba(251,243,231,0.25);}
+.cta-stat:last-child{border-right:none;}
+.cta-stat-num{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--yellow);}
+.cta-stat-lab{font-size:11px;color:rgba(251,243,231,0.6);margin-top:4px;max-width:130px;}
+
+/* ============================================================
+   PRICING — forfaits vendeurs (abonnement mensuel)
+   ============================================================ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:8px;}
+.price-card{
+  background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:30px 26px;
+  position:relative;display:flex;flex-direction:column;
+}
+.price-card.featured{border-color:var(--teal-dark);box-shadow:0 14px 30px rgba(20,107,118,0.18);transform:translateY(-6px);}
+.price-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--teal);color:var(--paper);font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.05em;padding:5px 14px;border-radius:20px;white-space:nowrap;
+}
+.price-name{font-family:var(--font-display);font-size:22px;margin-bottom:4px;}
+.price-trial{font-family:var(--font-mono);font-size:11px;color:var(--teal-dark);margin-bottom:18px;}
+.price-amount{display:flex;align-items:baseline;gap:6px;margin-bottom:4px;}
+.price-num{font-family:var(--font-mono);font-size:34px;font-weight:700;}
+.price-period{font-size:13px;color:var(--ink-faint);}
+.price-desc{font-size:13px;color:var(--ink-soft);margin-bottom:22px;line-height:1.6;}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:26px;flex:1;}
+.price-features li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--ink);}
+.price-features li i{color:var(--teal-dark);font-size:16px;margin-top:1px;flex-shrink:0;}
+.price-note{text-align:center;color:var(--ink-faint);font-size:12.5px;margin-top:26px;}
+@media(max-width:1000px){
+  .pricing-grid{grid-template-columns:1fr;}
+  .price-card.featured{transform:none;}
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{background:var(--paper-dark);border-top:2px dashed var(--line-strong);padding:56px 0 28px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:44px;}
+.footer-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin:14px 0 18px;max-width:270px;}
+.footer-socials{display:flex;gap:8px;}
+.social-stamp{
+  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line-strong);display:flex;align-items:center;
+  justify-content:center;font-size:16px;color:var(--ink-soft);transition:all .2s;
+}
+.social-stamp:hover{border-color:var(--teal);color:var(--teal-dark);}
+.footer-col-title{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-faint);margin-bottom:16px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links a{font-size:13.5px;color:var(--ink-soft);transition:color .2s;}
+.footer-links a:hover{color:var(--ink);}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:22px;border-top:1px dashed var(--line-strong);font-size:11.5px;color:var(--ink-faint);}
+.footer-payments{display:flex;gap:8px;}
+.payment-chip{padding:4px 10px;border:1px solid var(--line-strong);border-radius:4px;font-size:10.5px;font-weight:700;color:var(--ink-soft);font-family:var(--font-mono);}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1000px){
+  .hero-inner{grid-template-columns:1fr;}
+  .corkboard{height:420px;margin-top:20px;}
+  .promos-grid{grid-template-columns:1fr;}
+  .crate-1{grid-row:auto;min-height:200px;}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+  .tags-row{grid-template-columns:repeat(4,1fr);}
+  .sellers-grid{grid-template-columns:1fr;}
+  .how-grid{grid-template-columns:repeat(2,1fr);gap:40px 0;}
+  .how-grid::before{display:none;}
+  .trust-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
+  .nav-right .btn{display:none;}
+  .nav-hamburger{display:flex !important;}
+  .ledger-head,.ledger-row{grid-template-columns:40px 1.6fr 1fr;}
+  .metric-cell:nth-child(4),.metric-cell:nth-child(5),.tags-cell{display:none;}
+}
+@media (max-width:640px){
+  .logo-sub{display:none;}
+  .logo-text{font-size:19px;}
+  .brand-mark{height:30px;}
+  .nav-logo{gap:8px;}
+}
+@media(max-width:400px){
+  .nav-right{gap:4px;}
+  .nav-icon{width:34px;height:34px;font-size:15px;}
+}
+
+/* ---------- mobile hamburger + slide-down menu ---------- */
+.nav-hamburger{display:none;}
+.nav-mobile-menu{
+  position:fixed;top:72px;left:0;right:0;z-index:98;
+  background:var(--paper);border-bottom:2px dashed var(--line-strong);
+  box-shadow:0 12px 24px rgba(31,43,30,0.12);
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .3s ease, opacity .2s ease;
+}
+.nav-mobile-menu.open{max-height:480px;opacity:1;}
+.nav-mobile-menu-inner{max-width:1200px;margin:0 auto;padding:10px 24px 26px;display:flex;flex-direction:column;}
+.nav-mobile-link{
+  padding:14px 2px;font-size:15px;font-weight:600;color:var(--ink);
+  border-bottom:1px dashed var(--line);
+}
+.nav-mobile-link.active{color:var(--orange);}
+.nav-mobile-actions{display:flex;gap:10px;margin-top:16px;}
+.nav-mobile-actions .btn{flex:1;}
+@media (prefers-reduced-motion: reduce){
+  .ticker-track{animation:none;}
+}
+
+/* ============================================================
+   OVERLAY (shared by cart / checkout / auth)
+   ============================================================ */
+.overlay{
+  position:fixed;inset:0;background:rgba(31,43,30,0.45);z-index:200;
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.overlay.open{opacity:1;pointer-events:auto;}
+
+/* ============================================================
+   CART DRAWER
+   ============================================================ */
+.cart-drawer{
+  position:fixed;top:0;right:0;bottom:0;width:400px;max-width:92vw;background:var(--paper);
+  z-index:210;box-shadow:-16px 0 40px rgba(31,43,30,0.25);transform:translateX(100%);
+  transition:transform .3s var(--ease-out, ease);display:flex;flex-direction:column;
+}
+.cart-drawer.open{transform:translateX(0);}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:2px dashed var(--line-strong);}
+.drawer-title{font-family:var(--font-display);font-size:20px;}
+.drawer-close{width:34px;height:34px;border:1.5px solid var(--line-strong);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-soft);background:transparent;}
+.drawer-close:hover{border-color:var(--ink);color:var(--ink);}
+.drawer-body{flex:1;overflow-y:auto;padding:18px 22px;}
+.drawer-empty{text-align:center;padding:60px 10px;color:var(--ink-faint);}
+.drawer-empty i{font-size:40px;margin-bottom:14px;display:block;color:var(--line-strong);}
+.cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line);}
+.cart-item:last-child{border-bottom:none;}
+.cart-item-img{
+  width:56px;height:56px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;
+}
+.cart-item-body{flex:1;min-width:0;}
+.cart-item-name{font-size:13px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-item-seller{font-size:11px;color:var(--ink-faint);margin-bottom:8px;}
+.cart-item-row{display:flex;align-items:center;justify-content:space-between;}
+.qty-control{display:flex;align-items:center;border:1.5px solid var(--line-strong);border-radius:6px;overflow:hidden;}
+.qty-control button{width:26px;height:26px;background:transparent;border:none;font-size:14px;color:var(--ink-soft);}
+.qty-control button:hover{background:rgba(31,43,30,0.06);}
+.qty-control .qty-val{font-family:var(--font-mono);font-size:12px;width:22px;text-align:center;}
+.cart-item-price{font-family:var(--font-mono);font-weight:700;font-size:13px;color:var(--teal-dark);}
+.cart-item-remove{font-size:11px;color:var(--red);font-family:var(--font-mono);margin-top:6px;display:inline-block;}
+.drawer-foot{padding:18px 22px 22px;border-top:2px dashed var(--line-strong);}
+.drawer-subtotal-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:14px;}
+.drawer-subtotal-val{font-family:var(--font-mono);font-weight:700;font-size:18px;color:var(--teal-dark);}
+.drawer-foot .btn{width:100%;}
+
+/* ============================================================
+   CHECKOUT / AUTH MODAL
+   ============================================================ */
+.modal{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-46%);width:480px;max-width:92vw;max-height:88vh;overflow-y:auto;
+  background:var(--paper);border-radius:10px;border:1.5px solid var(--line-strong);z-index:220;
+  opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;box-shadow:0 30px 70px rgba(31,43,30,0.3);
+}
+.modal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:2px dashed var(--line-strong);}
+.modal-title{font-family:var(--font-display);font-size:19px;}
+.modal-body{padding:22px 24px 26px;}
+.modal-close{width:32px;height:32px;border:1.5px solid var(--line-strong);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);background:transparent;}
+.modal-close:hover{border-color:var(--ink);color:var(--ink);}
+
+.order-summary{background:var(--paper-dark);border:1px dashed var(--line-strong);border-radius:6px;padding:14px 16px;margin-bottom:18px;}
+.order-summary-row{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;color:var(--ink-soft);}
+.order-summary-row.total{border-top:1px dashed var(--line-strong);margin-top:6px;padding-top:10px;font-weight:700;color:var(--ink);font-family:var(--font-mono);font-size:14px;}
+
+.field-group{margin-bottom:14px;}
+.field-group label{display:block;font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:6px;}
+.field-group input,.field-group select{
+  width:100%;border:1.5px solid var(--line-strong);border-radius:6px;padding:10px 12px;font-size:13px;
+  background:var(--paper);color:var(--ink);font-family:var(--font-body);
+}
+.pay-options{display:flex;gap:8px;}
+.pay-opt{flex:1;border:1.5px solid var(--line-strong);border-radius:6px;padding:10px 8px;text-align:center;font-size:11.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all .15s;}
+.pay-opt.selected{border-color:var(--teal);background:var(--teal-light);color:var(--teal-dark);}
+
+.success-view{text-align:center;padding:10px 4px 6px;}
+.success-stamp{
+  width:96px;height:96px;border-radius:50%;border:3px solid var(--green,#2D7A4A);outline:1.5px solid var(--green,#2D7A4A);outline-offset:4px;
+  display:flex;align-items:center;justify-content:center;margin:6px auto 20px;font-size:42px;color:var(--green,#2D7A4A);
+  filter:url(#inkRough);transform:rotate(-4deg);
+}
+.success-order-num{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--teal-dark);margin:10px 0 4px;}
+
+.auth-tabs{display:flex;gap:6px;margin-bottom:18px;border:1.5px solid var(--line-strong);border-radius:8px;padding:4px;}
+.auth-tab{flex:1;text-align:center;padding:8px;border-radius:6px;font-size:13px;font-weight:600;color:var(--ink-soft);}
+.auth-tab.active{background:var(--ink);color:var(--paper);}
+.auth-panel{display:none;}
+.auth-panel.active{display:block;}
+
+/* toast */
+.toast{
+  position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);z-index:300;
+  background:var(--ink);color:var(--paper);padding:12px 20px;border-radius:6px;font-size:13px;
+  display:flex;align-items:center;gap:10px;opacity:0;pointer-events:none;transition:all .25s ease;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast i{color:var(--yellow);}
+
+@media(max-width:480px){
+  .cart-drawer{width:100vw;}
+}
+
+/* ---------- PAGE OCCASION ---------- */
+.occ-hero{padding:56px 0 24px;}
+.occ-hero h1{font-family:'Fraunces',serif;font-size:clamp(30px,5vw,48px);line-height:1.1;margin:8px 0 12px;}
+.occ-hero p{color:var(--ink-soft);max-width:560px;font-size:15px;}
+.occ-tags{grid-template-columns:repeat(4,1fr);}
+.occ-tags .hang-tag{cursor:pointer;}
+.cond-chip{position:absolute;bottom:10px;left:10px;background:var(--paper);border:1.5px solid var(--ink);color:var(--ink);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;z-index:2;}
+.occ-section-title{display:flex;align-items:baseline;gap:10px;margin:34px 0 14px;font-family:'Fraunces',serif;font-size:24px;}
+.occ-section-title small{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--ink-faint);font-weight:600;}
+@media(max-width:1000px){.products-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}.occ-tags{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="adora-mark.png" alt="ADORA" class="brand-mark">
+      <div style="display:flex;align-items:center;"><div class="logo-text">ADORA</div><span class="logo-sub">International</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html#categories">Catégories</a></li>
+      <li><a href="index.html#produits">Articles</a></li>
+      <li><a href="index.html#vendeurs">Vendeurs</a></li>
+      <li><a href="occasion.html" class="active">Occasion</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="index.html" class="btn btn-ghost btn-sm">Retour au site</a>
+      <a href="admin.html" class="btn btn-solid btn-sm">Admin</a>
+      <button type="button" class="nav-icon nav-hamburger" id="nav-hamburger-btn" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+    </div>
+  </div>
+  <div class="nav-mobile-menu" id="nav-mobile-menu">
+    <div class="nav-mobile-menu-inner">
+      <a href="index.html" class="nav-mobile-link">Accueil</a>
+      <a href="index.html#produits" class="nav-mobile-link">Articles</a>
+      <a href="occasion.html" class="nav-mobile-link active">Occasion</a>
+      <a href="vendeur.html" class="nav-mobile-link">Espace vendeur</a>
+      <a href="admin.html" class="nav-mobile-link">Espace administrateur</a>
+    </div>
+  </div>
+</nav>
+
+<section class="occ-hero">
+  <div class="container">
+    <div class="eyebrow">Seconde main</div>
+    <h1>Occasion : des vêtements déjà portés, à petit prix</h1>
+    <p>Robes, pantalons et plus encore, vendus par des particuliers et des vendeurs vérifiés. Chaque article indique son état.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:16px;">
+  <div class="container">
+    <div class="tags-row occ-tags" id="occ-tags"><div class="hang-tag active" data-cat="tout"><div class="tag-icon">♻️</div><div class="tag-name">Tout</div><div class="tag-count">14</div></div><div class="hang-tag" data-cat="robes"><div class="tag-icon">👗</div><div class="tag-name">Robes</div><div class="tag-count">4</div></div><div class="hang-tag" data-cat="pantalons"><div class="tag-icon">👖</div><div class="tag-name">Pantalons</div><div class="tag-count">4</div></div><div class="hang-tag" data-cat="hauts"><div class="tag-icon">👕</div><div class="tag-name">Hauts & T-shirts</div><div class="tag-count">2</div></div><div class="hang-tag" data-cat="autres"><div class="tag-icon">🧥</div><div class="tag-name">Autres</div><div class="tag-count">4</div></div></div>
+
+    <div class="filter-bar" style="margin-top:22px;">
+      <button class="filter-btn active" data-view="categories">Par catégorie</button>
+      <button class="filter-btn" data-view="liste">Liste simple</button>
+      <div class="filter-spacer"></div>
+      <select class="sort-select" id="sort-select">
+        <option value="pertinence">Trier : Pertinence</option>
+        <option value="asc">Moins chers</option>
+        <option value="desc">Plus chers</option>
+      </select>
+    </div>
+
+    <div id="occ-groups"></div>
+    <div class="products-grid" id="occ-pool" style="display:none;">
+      <div class="product-card" data-id="o1" data-name="Robe fleurie bohème" data-price="8000" data-category="robes">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-1">👗</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Très bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Robe fleurie bohème</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@ModeChicLome</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">8 000 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">S</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o2" data-name="Robe wax portée 2 fois" data-price="12500" data-category="robes">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-6">👗</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Comme neuf</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Robe wax portée 2 fois</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@WaxStory</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">12 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">M</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o3" data-name="Robe noire de soirée" data-price="9500" data-category="robes">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-3">👗</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Robe noire de soirée</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@SeconDeVie</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Kara</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">9 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">L</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o4" data-name="Robe d’été en lin" data-price="6000" data-category="robes">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-2">👗</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Robe d’été en lin</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@FripeSoko</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Sokodé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">6 000 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">M</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o5" data-name="Jean slim taille haute" data-price="7500" data-category="pantalons">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-8">👖</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Très bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Jean slim taille haute</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@DenimStyle</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Kara</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">7 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">38</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o6" data-name="Pantalon cargo kaki" data-price="6500" data-category="pantalons">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-4">👖</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Pantalon cargo kaki</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@UrbanLome</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">6 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">40</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o7" data-name="Pantalon tailleur noir" data-price="8500" data-category="pantalons">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-3">👖</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Comme neuf</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Pantalon tailleur noir</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@ModeChicLome</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">8 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">36</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o8" data-name="Jean droit vintage" data-price="5500" data-category="pantalons">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-1">👖</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Satisfaisant</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Jean droit vintage</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@FripeSoko</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Sokodé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">5 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">42</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o9" data-name="T-shirt imprimé graphique" data-price="3000" data-category="hauts">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-5">👕</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Très bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">T-shirt imprimé graphique</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@UrbanLome</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">3 000 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">M</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o10" data-name="Chemise en jean" data-price="4500" data-category="hauts">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-8">👕</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Chemise en jean</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@DenimStyle</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Kara</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">4 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">L</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o11" data-name="Veste en jean oversize" data-price="6500" data-category="autres">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-4">🧥</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Veste en jean oversize</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@SeconDeVie</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">6 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">M</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o12" data-name="Sac à main cuir" data-price="11000" data-category="autres">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-2">👜</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Très bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Sac à main cuir</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@SeconDeVie</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Kara</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">11 000 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">—</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o13" data-name="Sneakers blanches" data-price="14000" data-category="autres">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-7">👟</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Bon état</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Sneakers blanches</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@KicksLome</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Lomé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">14 000 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">42</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-id="o14" data-name="Manteau long beige" data-price="13500" data-category="autres">
+        <div class="card-hole"></div>
+        <div class="product-img-wrap">
+          <div class="product-img p-bg-6">🧥</div>
+          <span class="stamp stamp-teal p-stamp">Occasion</span>
+          <span class="cond-chip">Comme neuf</span>
+          <div class="product-fav"><i class="ti ti-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Manteau long beige</div>
+          <div class="product-seller-row">
+            <span class="product-seller-name">@FripeSoko</span>
+            <span class="product-location"><i class="ti ti-map-pin"></i>Sokodé</span>
+          </div>
+          <div class="product-footer">
+            <div><div class="price-current">13 500 FCFA</div></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="size-tags"><span class="size-tag">L</span></div>
+              <button class="product-add-btn" aria-label="Ajouter"><i class="ti ti-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <div>© 2026 ADORA. Tous droits réservés.</div>
+      <div><a href="index.html" style="margin-right:16px;">Accueil</a><a href="vendeur.html" style="margin-right:16px;">Espace vendeur</a><a href="admin.html">Admin</a></div>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-text"></span></div>
+
+<script>
+const CATS = [{"id": "robes", "label": "Robes", "emoji": "👗"}, {"id": "pantalons", "label": "Pantalons", "emoji": "👖"}, {"id": "hauts", "label": "Hauts & T-shirts", "emoji": "👕"}, {"id": "autres", "label": "Autres", "emoji": "🧥"}];
+const pool = document.getElementById('occ-pool');
+const groupsEl = document.getElementById('occ-groups');
+const allCards = Array.from(pool.querySelectorAll('.product-card'));
+let activeCat = 'tout', viewMode = 'categories', sortMode = 'pertinence';
+
+function sorted(list){
+  const a = list.slice();
+  if(sortMode==='asc') a.sort((x,y)=>x.dataset.price-y.dataset.price);
+  else if(sortMode==='desc') a.sort((x,y)=>y.dataset.price-x.dataset.price);
+  else a.sort((x,y)=>allCards.indexOf(x)-allCards.indexOf(y));
+  return a;
+}
+function render(){
+  groupsEl.innerHTML = '';
+  const visibleCats = CATS.filter(c => activeCat==='tout' || c.id===activeCat);
+  if(viewMode==='liste'){
+    const grid = document.createElement('div'); grid.className='products-grid'; grid.style.marginTop='24px';
+    sorted(allCards.filter(c=>activeCat==='tout'||c.dataset.category===activeCat)).forEach(c=>grid.appendChild(c));
+    groupsEl.appendChild(grid); return;
+  }
+  visibleCats.forEach(cat=>{
+    const items = sorted(allCards.filter(c=>c.dataset.category===cat.id));
+    if(!items.length) return;
+    const h = document.createElement('h2'); h.className='occ-section-title';
+    h.innerHTML = cat.emoji+' '+cat.label+' <small>'+items.length+' article'+(items.length>1?'s':'')+'</small>';
+    const grid = document.createElement('div'); grid.className='products-grid';
+    items.forEach(c=>grid.appendChild(c));
+    groupsEl.appendChild(h); groupsEl.appendChild(grid);
+  });
+}
+document.querySelectorAll('#occ-tags .hang-tag').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('#occ-tags .hang-tag').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); activeCat=t.dataset.cat; render();
+}));
+document.querySelectorAll('.filter-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); viewMode=b.dataset.view; render();
+}));
+document.getElementById('sort-select').addEventListener('change',e=>{sortMode=e.target.value;render();});
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-text').textContent=msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t=setTimeout(()=>t.classList.remove('show'),2200);
+}
+document.addEventListener('click',e=>{
+  const fav=e.target.closest('.product-fav');
+  if(fav){fav.classList.toggle('active');const i=fav.querySelector('i');i.classList.toggle('ti-heart');i.classList.toggle('ti-heart-filled');return;}
+  const add=e.target.closest('.product-add-btn');
+  if(add){showToast(add.closest('.product-card').dataset.name+' ajouté');}
+});
+const hb=document.getElementById('nav-hamburger-btn'), mm=document.getElementById('nav-mobile-menu');
+hb.addEventListener('click',()=>mm.classList.toggle('open'));
+window.addEventListener('scroll',()=>document.querySelector('nav').classList.toggle('scrolled',scrollY>12),{passive:true});
+render();
+</script>
+</body>
+</html>
